@@ -1,43 +1,59 @@
 import React from 'react';
-import PropTypes from 'prop-types'
+//import ReactDOM from 'react-dom'
 
 class App extends React.Component{
 
   constructor () {
-    super();
-    this.state ={
-      txt: 'this is the set state',
-      cat: 0,
+    super()
+    this.state = {
+      a: '',
+      b: '',
     }
   }
 
-  update = event => {
+  update = () => {
     this.setState({
-      txt: event.target.value,
+      a: this.a.value,
+      b: this.b.value,
+      c: this.c.refs.input.value // ReactDOM.findDOMNode(this.c).value
     })
   }
 
   render() {
-    let {txt, cat} = this.props;
     return (
       <div>
-        <h1>{this.props.txt}</h1>
-        <h1>{txt}</h1>
-        <p>The cat value is {cat}</p>
-        <div>
-          <label>
-            txt: <input type="text" onChange={this.update} />
-          </label>
-          <p>{this.state.txt} - {this.state.cat}</p>
-        </div>
+        <input 
+        ref={ node => this.a = node }
+        type="text"
+        onChange={this.update}
+        />
+        {this.state.a}
+        <hr/>
+        <input
+          ref={node => this.b = node}
+          type="text"
+          onChange={this.update}
+        />
+        {this.state.b}
+        <hr />
+        <Input
+          ref={ component => this.c = component}
+          update={this.update}
+        />
+        {this.state.c}
       </div>
     )
   }
 }
 
-App.propTypes = {
-  txt: PropTypes.string,
-  cat: PropTypes.number.isRequired
+class Input extends React.Component {
+  render () {
+    return (
+      <div>
+        <input ref="input" type="text" onChange={this.props.update} />
+      </div>
+    )
+  }
 }
 
 export default App;
