@@ -1,43 +1,60 @@
 import React from 'react';
-import PropTypes from 'prop-types'
+import ReactDOM from 'react-dom';
 
 class App extends React.Component{
 
   constructor () {
     super();
-    this.state ={
-      txt: 'this is the set state',
-      cat: 0,
+    this.state = {
+      val: 0
     }
   }
 
   update = event => {
     this.setState({
-      txt: event.target.value,
+      val: this.state.val + 1
     })
   }
 
   render() {
-    let {txt, cat} = this.props;
+    console.log('render')
+    return (
+      <button onClick={this.update}>{this.state.val}</button>
+    )
+  }
+
+  componentDidMount () {
+    console.log('componentDidMount')
+  }
+
+  componentWillMount () {
+    console.log('componentWillMount')
+  }
+
+  componentWillUnmount () {
+    console.log('componentWillUnmount')
+  }
+}
+
+class Wrapper extends React.Component {
+  
+  mount = () => {
+    ReactDOM.render(<App />, document.getElementById('a'))
+  }
+
+  unmount = () => {
+    ReactDOM.unmountComponentAtNode(document.getElementById('a'))
+  }
+
+  render () {
     return (
       <div>
-        <h1>{this.props.txt}</h1>
-        <h1>{txt}</h1>
-        <p>The cat value is {cat}</p>
-        <div>
-          <label>
-            txt: <input type="text" onChange={this.update} />
-          </label>
-          <p>{this.state.txt} - {this.state.cat}</p>
-        </div>
+        <button onClick={this.mount}>Mount</button>
+        <button onClick={this.unmount}>UnMount</button>
+        <div id="a"></div>
       </div>
     )
   }
 }
 
-App.propTypes = {
-  txt: PropTypes.string,
-  cat: PropTypes.number.isRequired
-}
-
-export default App;
+export default Wrapper;
