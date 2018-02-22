@@ -1,19 +1,17 @@
 import React from 'react';
-import PropTypes from 'prop-types'
 
 class App extends React.Component{
 
   constructor () {
-    super();
-    this.state ={
-      txt: 'this is the set state',
-      cat: 0,
+    super()
+    this.state = {
+      currentEvent: '---'
     }
   }
 
   update = event => {
     this.setState({
-      txt: event.target.value,
+      currentEvent: event.type
     })
   }
 
@@ -21,23 +19,25 @@ class App extends React.Component{
     let {txt, cat} = this.props;
     return (
       <div>
-        <h1>{this.props.txt}</h1>
-        <h1>{txt}</h1>
-        <p>The cat value is {cat}</p>
-        <div>
-          <label>
-            txt: <input type="text" onChange={this.update} />
-          </label>
-          <p>{this.state.txt} - {this.state.cat}</p>
-        </div>
+        <textarea
+          onKeyPress={this.update}
+          onCopy={this.update}
+          onCut={this.update}
+          onPaste={this.update}
+          onFocus={this.update}
+          onBlur={this.update}
+          onDoubleClick={this.update}
+          onTouchStart={this.update}
+          onTouchMove={this.update}
+          onTouchEnd={this.update}
+          cols="30"
+          rows="10"
+        />
+        <h1>{this.state.currentEvent}</h1>
       </div>
     )
   }
 }
 
-App.propTypes = {
-  txt: PropTypes.string,
-  cat: PropTypes.number.isRequired
-}
 
 export default App;
