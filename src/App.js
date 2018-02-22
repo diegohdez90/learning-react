@@ -1,43 +1,46 @@
 import React from 'react';
-import PropTypes from 'prop-types'
 
 class App extends React.Component{
 
   constructor () {
     super();
-    this.state ={
-      txt: 'this is the set state',
-      cat: 0,
+    this.state = {
+      items: []
     }
   }
 
-  update = event => {
+  componentWillMount = () => {
+    fetch('https://swapi.co/api/people/?format=json')
+      .then( response => response.json())
+      .then( ({results: items}) => this.setState({items}))
+  }
+
+  filter = event => {
     this.setState({
-      txt: event.target.value,
+      filter: event.target.value
     })
   }
 
   render() {
-    let {txt, cat} = this.props;
+    let items = this.state.items
+    if (this.state.filter) {
+      items = items.filter( item => 
+        item.name.toLowerCase()
+      .includes(this.state.filter.toLowerCase()))
+    }
     return (
       <div>
-        <h1>{this.props.txt}</h1>
-        <h1>{txt}</h1>
-        <p>The cat value is {cat}</p>
-        <div>
-          <label>
-            txt: <input type="text" onChange={this.update} />
-          </label>
-          <p>{this.state.txt} - {this.state.cat}</p>
-        </div>
+        <label>
+          Filter: <input type="text" onChange={this.filter} />
+        </label>
+        {items.map( (item, index) => 
+              (<Person key={index} person={item} />)
+          )}
       </div>
     )
   }
 }
 
-App.propTypes = {
-  txt: PropTypes.string,
-  cat: PropTypes.number.isRequired
-}
+const Person = props => <h4>{props.person.name}</h4>
 
 export default App;
