@@ -1,43 +1,89 @@
 import React from 'react';
+import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 
 class App extends React.Component{
 
   constructor () {
     super();
-    this.state ={
-      txt: 'this is the set state',
-      cat: 0,
+    this.state = {
+      red: 0
     }
   }
 
   update = event => {
     this.setState({
-      txt: event.target.value,
+      red: ReactDOM.findDOMNode(this.refs.red.refs.inp).value
     })
   }
 
   render() {
-    let {txt, cat} = this.props;
     return (
       <div>
-        <h1>{this.props.txt}</h1>
-        <h1>{txt}</h1>
-        <p>The cat value is {cat}</p>
-        <div>
-          <label>
-            txt: <input type="text" onChange={this.update} />
-          </label>
-          <p>{this.state.txt} - {this.state.cat}</p>
-        </div>
+        <NumInput ref="red"
+          min={0}
+          max={255}
+          step={1}
+          val={+this.state.red}
+          type="number"
+          label="Red"
+          update={this.update}/>
       </div>
     )
   }
 }
 
-App.propTypes = {
-  txt: PropTypes.string,
-  cat: PropTypes.number.isRequired
+class Slider extends React.Component {
+  render () {
+    return (
+      <div>
+        <input ref="inp"
+        type="range" 
+        min="0" 
+        max="255" 
+        onChange={this.props.update}/>
+      </div>
+    )
+  }
+}
+
+class NumInput extends React.Component {
+  render () {
+    let label = this.props.label !== '' ?
+      <label>{this.props.label} - {this.props.val}</label> : ''
+    return (
+      <div>
+        <input ref="inp" 
+        type={this.props.type}
+        min={this.props.min}
+        max={this.props.max}
+        step={this.props.step}
+        defaultValue={this.props.defaultValue}
+        onChange={this.props.update}
+        />
+        {label}
+      </div>
+    )
+  }
+}
+
+NumInput.propTypes = {
+  min: PropTypes.number,
+  max: PropTypes.number,
+  step: PropTypes.number,
+  val: PropTypes.number,
+  label: PropTypes.string,
+  update: PropTypes.func.isRequired,
+  type: PropTypes.oneOf(['number', 'range'])
+}
+
+NumInput.defaultProps = {
+  min: 0,
+  max: 0,
+  step: 1,
+  val: 0,
+  label: '',
+  type: 'range'
 }
 
 export default App;
