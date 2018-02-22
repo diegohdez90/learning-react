@@ -24,16 +24,21 @@ class App extends React.Component{
         <h1>{this.props.txt}</h1>
         <h1>{txt}</h1>
         <p>The cat value is {cat}</p>
-        <div>
-          <label>
-            txt: <input type="text" onChange={this.update} />
-          </label>
-          <p>{this.state.txt} - {this.state.cat}</p>
-        </div>
+        <p>{this.state.txt}</p>
+        <Widget update={this.update}/>
+        <p>{this.state.txt} - {this.state.cat}</p>
       </div>
     )
   }
 }
+
+const Widget = props => 
+  (<div>
+    <label>
+      txt: <input type="text" onChange={props.update} />
+    </label>
+  </div>)
+
 
 App.propTypes = {
   txt: PropTypes.string,
