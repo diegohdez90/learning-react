@@ -1,43 +1,25 @@
 import React from 'react';
-import PropTypes from 'prop-types'
 
 class App extends React.Component{
 
-  constructor () {
-    super();
-    this.state ={
-      txt: 'this is the set state',
-      cat: 0,
-    }
-  }
-
-  update = event => {
-    this.setState({
-      txt: event.target.value,
-    })
-  }
-
   render() {
-    let {txt, cat} = this.props;
     return (
-      <div>
-        <h1>{this.props.txt}</h1>
-        <h1>{txt}</h1>
-        <p>The cat value is {cat}</p>
-        <div>
-          <label>
-            txt: <input type="text" onChange={this.update} />
-          </label>
-          <p>{this.state.txt} - {this.state.cat}</p>
-        </div>
-      </div>
+      <Title text="The"/>
     )
   }
 }
 
-App.propTypes = {
-  txt: PropTypes.string,
-  cat: PropTypes.number.isRequired
+const Title = props => <h1>Title: {props.text}</h1>
+
+Title.propTypes = {
+  text (props, propName, component) {
+    if (!(propName in props)) {
+      return new Error(`Missing ${propName}`)
+    }
+    if (props[propName].length < 6) {
+      return new Error(`${propName} is too short`)
+    }
+  }
 }
 
 export default App;
